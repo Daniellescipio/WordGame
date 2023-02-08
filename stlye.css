@@ -1,0 +1,79 @@
+body{
+    text-align: center;
+}
+#boardContainer{
+    display: flex;
+    justify-content: center;
+}
+#keyboardContainer{
+    display: block;
+    justify-content: center;
+    margin-top: 2rem;
+}
+#gameboard{
+    display: grid;
+    grid-template-columns: repeat(5, 3rem);
+    height: 20rem;
+    grid-gap: 6px;
+}
+.boardRow{
+    display: flex;
+    margin: auto;
+    width: fit-content;
+}
+.letterDiv{
+    width: 3rem;
+    height: 3rem;
+    border: 2px solid rgb(219, 219, 219);
+}
+.keyDiv, .wordDiv{
+    width: fit-content;
+    padding: 1rem;
+    margin: 0.125rem;
+    height: 1rem;
+    border: 1px solid black;    
+    border-radius: 5px;
+    background-color: rgb(219, 219, 219);
+}
+.wordDiv{
+    font-size: .75rem;
+    padding: 1rem 0.75rem;
+}
+.testLetter{
+    border: 2px solid black;
+    width: 99.5%;
+    height: 85%;
+    padding-top: 0.4rem;
+    margin: auto;
+    font-size: 2rem;
+    position: relative;
+    top: -0.085rem;
+    left: -1.085px;
+    opacity: 0;
+}
+.letterTile{
+    position:absolute;
+    top: 0;
+    left: -1.085px;
+    height: 100%;
+    margin: 0;
+    width:100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.letterTileFront{
+    position:relative;
+}
+.letterTileBack{
+    opacity: 0;
+}
+#dialogeBox{
+    background-color: rgb(219, 219, 219);;
+    width: 8rem;
+    height: 2.5rem;
+    padding-top: 1rem;
+    position: absolute;
+    top: 13rem;
+    border: 1px dashed black;
+    display: none;
+}
