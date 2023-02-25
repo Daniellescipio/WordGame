@@ -64,8 +64,9 @@ function deleteLetter(){
 
 //function to submit new word 
 function enterWord(){
+    console.log(enteredWord.length, randomWord)
     if(enteredWord.length === 5){
-        fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${enteredWord.join("")}`)
+        fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${enteredWord.join("")}?key=d58a9888-052f-472c-9373-9dd6579419b5`)
         .then(response=>response.json())
         .then(data=>{
             //if the word exist
@@ -146,6 +147,7 @@ function handleArray(array, keyBoardRow){
 
 //enter loop will be run on each/the approprite gameboard row. The appropriate row will be determined by the indexes passed to the function. The function will recieve the index of the first letter's tile on the gmeboard and the index of the last letter's tile on the gameboard.
 function enterLoop(iEquals,iLessThan){
+    console.log("is this running?")
     //gsap timeline to ensure animation happens one letter at a time.
     const tl = gsap.timeline()
     //this will keep track of the number of times a letter appears in the random word...
@@ -157,7 +159,6 @@ function enterLoop(iEquals,iLessThan){
         :i === 2|| i === 7||i === 12||i === 17||i === 22||i === 27 ? 2 
         :i === 3|| i === 8||i === 13||i === 18||i === 23||i === 28 ? 3 
         :4
-
         const letterTile = gameBoard.children[i]
         const letter = letterTile.textContent
         // the keyboardplace will chage depending on the row on the keyboard where the letter is found
@@ -166,6 +167,7 @@ function enterLoop(iEquals,iLessThan){
         let keyboardRow
         //first row
         if(keyboardOneArray.indexOf(letter)>=0){
+
             keyboardRow = document.getElementById("keyboardRowOne")
             keyboardPlace = keyboardOneArray.indexOf(letter)
         //second row
@@ -180,11 +182,9 @@ function enterLoop(iEquals,iLessThan){
 
         let keyboardTile = keyboardRow.children[keyboardPlace]
         let positionArray = keyboardTile.getAttribute("position")&&keyboardTile.getAttribute("position").split("")
-
         if(keyboardTile.getAttribute("chosenLetter") === null){
            color = "grey" 
         }else{
-            console.log()
             if(positionArray.indexOf(position.toString())<0){
                 color = "#c3c311" 
             }else{
@@ -270,6 +270,7 @@ handleArray(keyboardTwoArray, keyboardRowTwo)
 handleArray(keyboardThreeArray, keyboardRowThree)
 
 //gets and sets the random word
+//this is not working properly....
 function setWord(data){
     randomWord = data[0]
     let previousLetter = []
@@ -285,7 +286,7 @@ function setWord(data){
                 return letter
             }
         })
-        let key = previousLetter.indexOf(currentLetter)<0 ? true : countArray.length
+        let key = previousLetter.indexOf(currentLetter)
         if(keyboardOneArray.indexOf(currentLetter.toUpperCase())>=0){
             row = document.getElementById("keyboardRowOne")
             array = keyboardOneArray
