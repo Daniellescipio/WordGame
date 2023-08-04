@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', ()=>{
 
 //Game container, board, keyboard, and keyboard rows are gotten from html
-const gameContainer = document.getElementById("boardContainer");
 const gameBoard = document.getElementById("gameboard");
-const keyboardContainer = document.getElementById("keyboardContainer");
 const keyboardRowOne = document.getElementById("keyboardRowOne");
 const keyboardRowTwo = document.getElementById("keyboardRowTwo");
 const keyboardRowThree = document.getElementById("keyboardRowThree");
@@ -63,61 +61,66 @@ function deleteLetter(){
 }
 
 //function to submit new word 
-function enterWord(){
-    console.log(enteredWord.length, randomWord)
+async function enterWord(){
     if(enteredWord.length === 5){
-        fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${enteredWord.join("")}?key=d58a9888-052f-472c-9373-9dd6579419b5`)
-        .then(response=>response.json())
-        .then(data=>{
-            //if the word exist
-            if(data[0]){ 
-            //this function checks the row the user is on, switches to the next row and calls the enter loop with the indexes of the appropriate row to check the word entered.
-            let winCount
-            if(currentRow === "first"){
-                currentRow = "second"
-                winCount = enterLoop(0,4)
-                dialogeBox.textContent = "Wow! Did you cheat? Good Job!"
-            }else if(currentRow === "second"){
-                currentRow = "third"
-                winCount = enterLoop(5,9)
-                dialogeBox.textContent = "Super smart or super lucky? Who cares! Great Job!"
-            }else if(currentRow === "third"){
-                currentRow = "fourth"
-                winCount = enterLoop(10,14)
-                dialogeBox.textContent = "Awesome! Good Job!"
-            }else if(currentRow === "fourth"){
-                currentRow = "fifth"
-                winCount = enterLoop(15,19)
-                dialogeBox.textContent = "Well Done!"
-            }else if(currentRow === "fifth"){
-                currentRow = "sixth"
-                dialogeBox.textContent = "Better late than never!"
-                winCount = enterLoop(20,24)
-            }else if(currentRow === "sixth"){
-                winCount = enterLoop(25,29)
-                if(winCount === 5){
-                    dialogeBox.textContent = "Really made me hold my breath..."
-                }else{
-                    dialogeBox.textContent = randomWord
-                    gsap.to(dialogeBox, {display:"block"})
-                }    
-            }
-            //resets the entered word
-                enteredWord = []
-            if(winCount === 5){
-                gsap.to(dialogeBox, {display:"block"})
-            }
-            }else{
-            dialogeBox.textContent = "That's not a word!"
-            gsap.to(dialogeBox, {display:"block", repeat:1, yoyo:true})
-            }
-        }) 
-
+        try{ 
+            const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${enteredWord.join("")}`)
+            const result = await res.json()
+            checkWord(result)
+        }catch(error){
+            console.log(error)
+        }
     }else{
         dialogeBox.textContent = "That word is too short!"
         gsap.to(dialogeBox, {display:"block", repeat:1, yoyo:true})
     }
 }
+
+function checkWord(data){
+    //if the word exist
+    if(data[0]){ 
+        //this function checks the row the user is on, switches to the next row and calls the enter loop with the indexes of the appropriate row to check the word entered.
+        let winCount
+        if(currentRow === "first"){
+            currentRow = "second"
+            winCount = enterLoop(0,4)
+            dialogeBox.textContent = "Wow! Did you cheat? Good Job!"
+        }else if(currentRow === "second"){
+            currentRow = "third"
+            winCount = enterLoop(5,9)
+            dialogeBox.textContent = "Super smart or super lucky? Who cares! Great Job!"
+        }else if(currentRow === "third"){
+            currentRow = "fourth"
+            winCount = enterLoop(10,14)
+            dialogeBox.textContent = "Awesome! Good Job!"
+        }else if(currentRow === "fourth"){
+            currentRow = "fifth"
+            winCount = enterLoop(15,19)
+            dialogeBox.textContent = "Well Done!"
+        }else if(currentRow === "fifth"){
+            currentRow = "sixth"
+            dialogeBox.textContent = "Better late than never!"
+            winCount = enterLoop(20,24)
+        }else if(currentRow === "sixth"){
+            winCount = enterLoop(25,29)
+            if(winCount === 5){
+                dialogeBox.textContent = "Really made me hold my breath..."
+            }else{
+                dialogeBox.textContent = randomWord
+                gsap.to(dialogeBox, {display:"block"})
+            }    
+        }
+        //resets the entered word
+            enteredWord = []
+        if(winCount === 5){
+            gsap.to(dialogeBox, {display:"block"})
+        }
+    }else{
+        dialogeBox.textContent = "That's not a word!"
+        gsap.to(dialogeBox, {display:"block", repeat:1, yoyo:true})
+    }
+}
+
 
 //Creates each row of the keyboard from the keyboard array ad assigns an even listener to each letter/ enter and delete
 function handleArray(array, keyBoardRow){
@@ -143,6 +146,7 @@ function handleArray(array, keyBoardRow){
     }
 }
 
+
 //Enter, Delete and NewLetter Loops
 
 //enter loop will be run on each/the approprite gameboard row. The appropriate row will be determined by the indexes passed to the function. The function will recieve the index of the first letter's tile on the gmeboard and the index of the last letter's tile on the gameboard.
@@ -167,7 +171,6 @@ function enterLoop(iEquals,iLessThan){
         let keyboardRow
         //first row
         if(keyboardOneArray.indexOf(letter)>=0){
-
             keyboardRow = document.getElementById("keyboardRowOne")
             keyboardPlace = keyboardOneArray.indexOf(letter)
         //second row
@@ -272,6 +275,7 @@ handleArray(keyboardThreeArray, keyboardRowThree)
 //gets and sets the random word
 //this is not working properly....
 function setWord(data){
+    console.log(data)
     randomWord = data[0]
     let previousLetter = []
     let randomWordArray = randomWord.split("")
@@ -309,7 +313,7 @@ function randomWordGenerator(){
    .then(data=>setWord(data))
 }
 randomWordGenerator()
- })
+})
 
 
 
