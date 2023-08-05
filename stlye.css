@@ -13,8 +13,8 @@ body{
 #gameboard{
     display: grid;
     grid-template-columns: repeat(5, 3rem);
-    height: 20rem;
-    grid-gap: 6px;
+    height: 23rem;
+    grid-gap: 10px;
 }
 .boardRow{
     display: flex;
