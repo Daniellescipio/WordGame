@@ -70,8 +70,6 @@ body{
 #dialogeBox{
     background-color: rgb(219, 219, 219);;
     width: 8rem;
-    height: 2.5rem;
-    padding-top: 1rem;
     position: absolute;
     top: 13rem;
     border: 1px dashed black;

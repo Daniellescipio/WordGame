@@ -13,6 +13,7 @@ let generateWord = ()=>{
 }
 //the word our game will be played with
 let newWord = generateWord()
+//let newWord = "inbox"
 
 
 //Game container, board, keyboard, and keyboard rows are gotten from html
@@ -84,15 +85,17 @@ async function checkWord(){
                     gsap.to(dialogeBox, {display:"block"})
                 //if they did not win...
                 }else{
-                    //if they still have tries left, we just empty the word and go to the next attempt. 
-                    enteredWord = []
-                    attempt ++
-                    currentAttempt = `row-${attempt}`
                     //if they are on their sixth attempt, game is over, and we display the word. 
                     if(attempt === 6){
                         dialogeBox.textContent = newWord
                         gsap.to(dialogeBox, {display:"block"})
+                    }else{
+                    //if they still have tries left, we just empty the word and go to the next attempt. 
+                    enteredWord = []
+                    attempt ++
+                    currentAttempt = `row-${attempt}`
                     }
+
                 }
             //if the word is not long enough, we tell the player such
             }else{
@@ -151,6 +154,7 @@ function enterLoop(){
     let spacesToCheck = row.children
     //split the new word into an array, this is the word the user is trying to guess
     let newWordArray = newWord.split("")
+    const foundLetters  = []
     //we loop throught the spaces to check...
     for(let i = 0; i<spacesToCheck.length; i++){
         //get each letter from it's space
@@ -184,13 +188,15 @@ function enterLoop(){
                 //..futhermore if they are in the same positions...
                 if(i===x){
                     //change the color green
+                    foundLetters.push(letterToCheckAgainst.toUpperCase())
                     color = "#69b969"
+                    {break}
                     //if they are not in the same positions...
                 }else{
                     //it first checks to see how many times the letterToCheck(from our entered word) is in the new Word
                     let letterCheckArray = newWordArray.filter((letter)=>letter.toUpperCase()===letterToCheck.toUpperCase())
                     //if we already found the letter we are checking AND it appears in the new word once of less 
-                    if(color === "#69b969" && letterCheckArray.length <=1){
+                    if(foundLetters.indexOf(letterToCheck) >= 0 && letterCheckArray.length <=1){
                         //change the color grey
                         color = "grey" 
                         //in all other cases...
