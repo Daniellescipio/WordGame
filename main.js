@@ -45,6 +45,12 @@ for(let i = 0; i<6; i++){
         letterDiv.setAttribute("class","letterDiv")
         //attribute for solving puzzle
         letterDiv.setAttribute("data-letter",false)
+        letterDiv.addEventListener("click",()=>{
+            const letterInput = document.createElement("input")
+            letterInput.classList.add("phoneType")
+            letterDiv.append(letterInput)
+        })
+
         //append the square to the row...
         row.append(letterDiv)
     }
@@ -273,7 +279,7 @@ function newLetterLoop(letter){
             //append the letter to the appropriate tile
             spacesToFill[i].append(testLetter)
             //gsap to animate letter tile in place
-            gsap.to(testLetter, {opacity:1, ease: "bounce.out"})
+            gsap.to(testLetter, {opacity:1, ease: "bounce.out", delay:0})
             //add the new letter the the entered word
             enteredWord.push(letter)
             //break the loop so it only adds one letter at a time
