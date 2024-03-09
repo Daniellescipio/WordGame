@@ -78,6 +78,7 @@ body{
 }
 /* mobile display */
 @media screen and (max-width: 992px) {
+    
     body{
         touch-action: manipulation;
     }
@@ -86,10 +87,11 @@ body{
     }
     #gameboard{
         grid-template-columns: repeat(5, 17vw);
+        height: inherit;
     }
     .letterDiv{
         width: 100%;
-        height: 11em;
+        height: 8vh;
     }
     .testLetter{
         font-size: 8em;
