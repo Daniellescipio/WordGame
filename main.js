@@ -57,11 +57,13 @@ for(let i = 0; i<6; i++){
     //...append the row to the board.
     gameBoard.append(row)
 }
-
+//<span class="material-symbols-outlined">
+// backspace
+// </span>
 //Letters for key board rows
 const keyboardOneArray = ["Q","W","E","R","T","Y","U","I","O","P"]
 const keyboardTwoArray = ["A","S","D","F","G","H","J","K","L"]
-const keyboardThreeArray = ["ENTER","Z","X","C","V","B","N","M","DELETE"]
+const keyboardThreeArray = ["ENTER","Z","X","C","V","B","N","M","backspace"]
 const alphabetArray = keyboardOneArray.concat(keyboardTwoArray, keyboardThreeArray)
 
 
@@ -126,9 +128,16 @@ async function checkWord(){
 function handleArray(array, keyBoardRow){
      for(let i = 0; i<array.length; i++){
         //a p tag is created for each letter in the array
-        const keyDiv = document.createElement("p")
-        //letters get one class and enter and delete get another for styling purposes
-        array[i].length <= 1 ? keyDiv.setAttribute("class","keyDiv") : keyDiv.setAttribute("class","wordDiv")
+        let keyDiv
+        if(array[i] === "backspace"){
+            keyDiv = document.createElement("span")
+            keyDiv.classList.add("material-symbols-outlined")
+        }else{
+          keyDiv = document.createElement("p")  
+        }
+        
+        //enter gets a special class for styling purposes
+        array[i]==="ENTER" ? keyDiv.classList.add("wordDiv") : keyDiv.classList.add("keyDiv")
         // the letter is assigned to the tile in a few different ways included the html text
         keyDiv.setAttribute("letter", array[i])
         keyDiv.setAttribute("data-key", array[i])
@@ -140,7 +149,7 @@ function handleArray(array, keyBoardRow){
             keyDiv.addEventListener("click", ()=>newLetterLoop(array[i])) 
         }else if(array[i].length === 5){
             keyDiv.addEventListener("click", ()=>checkWord()) 
-        }else if(array[i] === "DELETE"){
+        }else if(array[i] === "backspace"){
             keyDiv.addEventListener("click", deleteLoop)
         } 
     }
